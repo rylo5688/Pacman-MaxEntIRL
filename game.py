@@ -603,8 +603,22 @@ class Game:
         sys.stdout = OLD_STDOUT
         sys.stderr = OLD_STDERR
 
-    # def stateToString(self):
+    # Turn the current state into an index
+    def currentStateToIndex(self):
+        stateStr = str(self.state)
 
+        # Pacman can be >, <, ^, or v
+        if stateStr.find('>') != -1:
+            return stateStr.find('>')
+
+        if stateStr.find('<') != -1:
+            return stateStr.find('<')
+
+        if stateStr.find('^') != -1:
+            return stateStr.find('^')
+
+        if stateStr.find('v') != -1:
+            return stateStr.find('v')
 
     def run(self):
         """
@@ -739,9 +753,7 @@ class Game:
             self.unmute()
 
             # TODO: Add the current state to the vector
-            strStateCur = str(self.state)
-            strStateCur = strStateCur[:strStateCur.find("\nScore")]
-            # self.demo.append(strState[:strState.find("\nScore")])
+            stateCur = self.currentStateToIndex()
 
             # Execute the action
             self.moveHistory.append((agentIndex, action))
@@ -774,10 +786,10 @@ class Game:
                 boinc.set_fraction_done(self.getProgress())
 
             # TODO: Add action to vector
-            strStateNext = str(self.state)
-            strStateNext = strStateNext[:strStateNext.find("\nScore")]
+            stateNext = self.currentStateToIndex()
+            actions = {'North': (1,0), 'South': (-1, 0), 'West': (0, -1), 'East': (0, 1), 'Stop': (0, 0)}
 
-            self.demo.append((strStateCur, action, strStateNext))
+            self.demo.append((stateCur, actions[action], stateNext))
 
 
         # inform a learning agent of the game result
