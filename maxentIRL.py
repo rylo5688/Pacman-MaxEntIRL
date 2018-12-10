@@ -51,10 +51,10 @@ def maxent_irl(sample_paths, feature_matrix, transition_probability, discount, i
 
     -> Reward vector of size N
     """
-    N_STATES, _, _ = np.shape(transition_probability)
+    N_STATES, N_FEATURES, N_ACTIONS = np.shape(transition_probability)
 
     # Initialize the reward weights to random probabilities since we are going to adjust them as we look at the samples
-    theta = rn.uniform(size=(feature_matrix.shape[1]))
+    theta = rn.uniform(size=(3))
 
     # Calculate feature expectations
     feature_expectations = np.zeros(feature_matrix.shape[1])
@@ -67,7 +67,7 @@ def maxent_irl(sample_paths, feature_matrix, transition_probability, discount, i
         # 1. Solve for optimal policy w.r.t. rewards with value iteration
         rewards = feature_matrix.dot(theta) # Vector of reward values
 
-        _, policy = value_iteration.ValueIterationAgent(rewards, discount=discount)
+        policy = value_iteration.find_policy(N_STATES, N_ACTIONS, transition_probability, rewards, discount)
 
         # 2. Solve for state visitation frequences P(s | theta, T)
         svf = compute_svf(sample_paths, transition_probability, discount, policy)
@@ -77,4 +77,5 @@ def maxent_irl(sample_paths, feature_matrix, transition_probability, discount, i
 
         # 4. Update theta with one gradient step
         theta += learning_rate * gradient
-    return feature_matrix.dot(theta).reshape((N_STATES, ))
+    # return feature_matrix.dot(theta).reshape((N_STATES, ))
+    return theta

@@ -594,7 +594,9 @@ def readCommand(argv):
         args['numTraining'] = options.numTraining
         if 'numTraining' not in agentOpts:
             agentOpts['numTraining'] = options.numTraining
-    pacman = pacmanType(**agentOpts)  # Instantiate Pacman with agentArgs
+    pacman = pacmanType([ .603471071, -809.362921, 16.5522190])  # Instantiate Pacman with agentArgs
+    # pacman = pacmanType(**agentOpts)  # Instantiate Pacman with agentArgs
+
     args['pacman'] = pacman
 
     # Don't display training games
@@ -749,6 +751,7 @@ if __name__ == '__main__':
     > python pacman.py --help
     """
     args = readCommand(sys.argv[1:])  # Get game components based on input
+    print(args)
     runGames(**args)
 
     # import cProfile

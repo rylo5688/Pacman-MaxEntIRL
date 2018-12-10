@@ -671,7 +671,6 @@ class Game:
 
         while not self.gameOver:
             # Fetch the next agent
-            print(self.state)
             agent = self.agents[agentIndex]
             move_time = 0
             skip_action = False
